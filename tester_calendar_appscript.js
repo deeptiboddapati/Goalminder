@@ -56,8 +56,6 @@
 3. setColor(color)
   return-Calendar
   Sets the color of the calendar.
-2. 
-  return-
 
 
 ###Constructors
@@ -105,13 +103,6 @@
     * guests- String;  a comma-separated list of email addresses that should be added as guests
     * sendInvites- Boolean; whether to send invitation emails (default: false)
 
-4. 
-  return-
-5. 
-  return-
-6. 
-  return-
-
 ###Destructors
 
 1. deleteCalendar()
@@ -128,31 +119,11 @@
 
 1. getCalendarsByName(name)
   return- Calendar[]
+
 2. getCalendarById(id)
   return- Calendar
-3. 
-  return-
-4. 
-  return-
-5. 
-  return-
-6. 
-  return-
 
-###Setters
- 
-1. 
-  return-
-2. 
-  return-
-3. 
-  return-
-4. 
-  return-
-5. 
-  return-
-6. 
-  return-
+
 
 ###Constructors
  
@@ -162,25 +133,7 @@
   Overloaded- createCalendar(name, options)
   return- Calendar
 
-5. 
-  return-
-6. 
-  return-
 
-###Destructors
- 
-1. 
-  return-
-2. 
-  return-
-3. 
-  return-
-4. 
-  return-
-5. 
-  return-
-6. 
-  return-
 
 #Class CalendarEvent
 
@@ -209,14 +162,11 @@
 6. getTitle()
   return- String
 
-6. getTag(key)
+7. getTag(key)
   return- String
 
-6. isAllDayEvent()
+8. isAllDayEvent()
   return- bool
-
-6. 
-  return-
 
 ###Setters
  
@@ -235,8 +185,6 @@
 5. setDescription(description)
   return- CalendarEvent
 
-6. 
-  return-
 
 ###Updaters
  
@@ -269,80 +217,104 @@
 2. deleteTag(key)
   return- CalendarEvent
 
-3. 
-  return-
-4. 
-  return-
-5. 
-  return-
-6. 
-  return-
-
-#Class Calendar
-
-  Represents a calendar that the user owns or is subscribed to.
-
-##Methods 
-
-###Getters
-
-1. 
-  return-
-2. 
-  return-
-3. 
-  return-
-4. 
-  return-
-5. 
-  return-
-6. 
-  return-
-
-###Setters
- 
-1. 
-  return-
-2. 
-  return-
-3. 
-  return-
-4. 
-  return-
-5. 
-  return-
-6. 
-  return-
-
-###Constructors
- 
-1. 
-  return-
-2. 
-  return-
-3. 
-  return-
-4. 
-  return-
-5. 
-  return-
-6. 
-  return-
-
-###Destructors
- 
-1. 
-  return-
-2. 
-  return-
-3. 
-  return-
-4. 
-  return-
-5. 
-  return-
-6. 
-  return-
 
 */
+
+class CalendarEvent {
+  constructor(){
+
+  this.thirtydaymonths = [3,5,8,10]
+  //this.year = getRandomInt(1970,2015);
+  this.year = 2015;
+  this.month = getRandomInt(0,11);//0-11
+
+  if(!(this.thirtydaymonths.indexOf(this.month) === -1)){ //if indexof returns anything but -1
+  this.da = getRandomInt(1,30); //1-30
+  }
+  else if(this.month ===1){
+    this.da = CheckforLeapYear(this.year);
+    
+  }
+  else{
+      this.da = getRandomInt(1,31);
+    }
+  this.date = new Date(this.year,this.month,this.da);
+  this.start = getRandomInt(1,1339);
+  this.duration =getRandomInt(20,1339-this.start);
+  //Logger.log(this.date);
+    if(this.date.getMonth() != this.month){
+      throw "error month has changed";
+    };
+    if(this.date.getFullYear() != this.year){
+      throw "error year has changed";
+      
+    };
+    if(this.date.getDate() != this.da){
+      throw "error day has changed";
+    };
+  }
+
+getStartTime(){
+  var pridate = new Date(this.year,this.month,this.da)
+  addMinutestoDate(pridate,this.start)
+  return pridate
+};
+
+getEndTime(){
+  var pridate = new Date(this.year,this.month,this.da)
+  addMinutestoDate(pridate,this.start+this.duration)
+  return pridate
+};
+
+}
+
+function getRandomInt(min, max) {
+  //used by tester_calendar 
+  return Math.round(Math.random() * (max - min)) + min;
+}
+
+function CheckforLeapYear(year){
+  //used by tester_calendar 
+  if(!(year%400) || (year%100 && !(year%4))){
+      var leapyear = year;
+      var day = getRandomInt(1,29);
+    };
+   if(year%4 || (!(year%25) && year%16)){
+     var notleapyear = year;
+     var day = getRandomInt(1,28);
+   };
+    if(leapyear === notleapyear){
+      throw "Error with Leapyear calculation";
+    };
+  return day
+};
+
+function compareEvents(a, b) {
+  //used by tester_calendar 
+   var difference = a.getStartTime() - b.getStartTime();
+
+  return difference;
+};
+
+function addMinutestoDate(dateobj, min){
+  //used by tester_calendar 
+  var milliseconds = min*60000 +dateobj.getTime()
+  dateobj.setTime(milliseconds)
+  return dateobj
+};
+
+function createEventsList(){
+  
+  var numevents = 100;
+  var eventlist = [];
+  for(var i = 0; i <numevents; i++){
+  eventlist.push(new CalendarEvent())
+  }
+  
+  eventlist.sort(compareEvents)
+  
+  return eventlist
+};
+
+createEventsList();
 
