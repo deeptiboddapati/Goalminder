@@ -9,7 +9,7 @@
 
 ###Getters  
 
-1. ~~ getEvents(startTime,endTime) ~~
+1. getEvents(startTime,endTime) 
 
 2. ~~ getId() ~~
 
@@ -61,13 +61,13 @@
 
 2. ~~ getAllDayStartDate() ~~
 
-3. ~~ getStartTime() ~~
+3.  getStartTime() 
 
-4. ~~ getEndTime() ~~
+4.  getEndTime() 
 
 5. ~~ getLocation() ~~
 
-6. ~~ getTitle() ~~
+6.  getTitle() 
 
 7. ~~ getTag(key) ~~
 
