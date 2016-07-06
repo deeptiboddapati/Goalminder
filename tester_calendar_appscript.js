@@ -223,47 +223,23 @@
 class CalendarEvent {
   constructor(){
 
-  this.thirtydaymonths = [3,5,8,10]
-  //this.year = getRandomInt(1970,2015);
-  this.year = 2015;
-  this.month = getRandomInt(0,11);//0-11
+  var seed = moment();
+  seed.add(getRandomInt(1,365), 'days')
+  .add(getRandomInt(0,24),'hours')
+  .add(getRandomInt(0,60),'minutes')
 
-  if(!(this.thirtydaymonths.indexOf(this.month) === -1)){ //if indexof returns anything but -1
-  this.da = getRandomInt(1,30); //1-30
-  }
-  else if(this.month ===1){
-    this.da = CheckforLeapYear(this.year);
-    
-  }
-  else{
-      this.da = getRandomInt(1,31);
-    }
-  this.date = new Date(this.year,this.month,this.da);
-  this.start = getRandomInt(1,1339);
-  this.duration =getRandomInt(20,1339-this.start);
-  //Logger.log(this.date);
-    if(this.date.getMonth() != this.month){
-      throw "error month has changed";
-    };
-    if(this.date.getFullYear() != this.year){
-      throw "error year has changed";
-      
-    };
-    if(this.date.getDate() != this.da){
-      throw "error day has changed";
-    };
+  this.startTime = new Date(seed._d);
+  this.duration = getRandomInt(0,1439-(seed.hours()*60+seed.minutes()));
+  seed.add(this.duration,'minutes')
+  this.endTime = new Date(seed._d);
   }
 
 getStartTime(){
-  var pridate = new Date(this.year,this.month,this.da)
-  addMinutestoDate(pridate,this.start)
-  return pridate
+  return this.startTime
 };
 
 getEndTime(){
-  var pridate = new Date(this.year,this.month,this.da)
-  addMinutestoDate(pridate,this.start+this.duration)
-  return pridate
+  return this.endTime
 };
 
 }
