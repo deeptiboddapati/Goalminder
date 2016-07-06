@@ -249,34 +249,13 @@ function getRandomInt(min, max) {
   return Math.round(Math.random() * (max - min)) + min;
 }
 
-function CheckforLeapYear(year){
-  //used by tester_calendar 
-  if(!(year%400) || (year%100 && !(year%4))){
-      var leapyear = year;
-      var day = getRandomInt(1,29);
-    };
-   if(year%4 || (!(year%25) && year%16)){
-     var notleapyear = year;
-     var day = getRandomInt(1,28);
-   };
-    if(leapyear === notleapyear){
-      throw "Error with Leapyear calculation";
-    };
-  return day
-};
+
 
 function compareEvents(a, b) {
   //used by tester_calendar 
    var difference = a.getStartTime() - b.getStartTime();
 
   return difference;
-};
-
-function addMinutestoDate(dateobj, min){
-  //used by tester_calendar 
-  var milliseconds = min*60000 +dateobj.getTime()
-  dateobj.setTime(milliseconds)
-  return dateobj
 };
 
 function createEventsList(){
