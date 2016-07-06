@@ -3,15 +3,13 @@
 	var d = date.getDate();
 	var m = date.getMonth();
 	var y = date.getFullYear();
-    var eventinfo = {
-		header: {
+    var eventinfo = {};
+    eventinfo.header = {
 		left: 'prev,next today',
 		center: 'title',
 		right: 'month,agendaWeek,agendaDay'
-		},
-
-		editable: true,
-		events:[
+		};
+	eventinfo.events = [
 
 
 					{
@@ -50,18 +48,17 @@
 					allDay : false // will make the time show
 
 					}
-		],
- eventAfterRender: function(event, element, view) {
+		]
+
+	eventinfo.editable = true
+	eventinfo.eventAfterRender = function(event, element, view) {
         var duration = moment.duration(event.end - event.start).hours();
   
     element.find('.fc-title').append(" <div>Hours: "+ duration+ "</div>");
    if(event.start<new Date()){
     element.addClass("past")
    };
-
-    }
-
-	}
+};
         
 	$('#calendar').fullCalendar(eventinfo)
 
