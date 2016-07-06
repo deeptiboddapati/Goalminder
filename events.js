@@ -65,5 +65,5 @@
         
 	$('#calendar').fullCalendar(eventinfo)
 
-var calendarEvents = createEventsList();
-console.log(calendarEvents);
+//var calendarEvents = createEventsList();
+//console.log(calendarEvents);
