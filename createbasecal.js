@@ -7,3 +7,13 @@ var fullCal = new Fullcalwrapper();
 fullCal.setEvents(events);
 
 fullCal.renderCalendar();
+
+/*
+var newcal = new Calendar();
+var newevents = newcal.getEvents();
+
+fullCal.updateEvents(newevents);
+
+fullCal.renderCalendar();
+
+*/
