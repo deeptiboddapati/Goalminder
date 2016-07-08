@@ -1,23 +1,63 @@
 var calendar = new Calendar();
 var events = calendar.getEvents();
-var eventarray = new Array(events.length);
-index= 0;
-function convertcaleventsforfullcal(item){
-   eventarray[index]= {title:'gen',
-	start:'00',
-	end:'00',
-	allDay:false 
+
+
+class Fullcalwrapper{
+	
+	constructor(){
+	
+	this.header =  {
+		left: 'prev,next today',
+		center: 'title',
+		right: 'month,agendaWeek,agendaDay'
+		};
+	this.editable = true;
+	this.events = [];
+
 	}
-	eventarray[index].title = item.getTitle();
-	eventarray[index].start = item.getStartTime();
-	eventarray[index].end = item.getEndTime();
-	//eventarray[index].allDay =false;
-	index++; 
-}
-for(i=0;i<events.length;i++){
-	convertcaleventsforfullcal(events[i])
+
+	renderCalendar(){
+	
+	var calInfo = {};
+	
+	calInfo.header= this.header;
+	calInfo.editable= this.editable;
+	calInfo.events=this.events;
+	$('#calendar').fullCalendar(calInfo);
+	
+	}
+
+	initializeEventArray(length){
+	var eventArray = new Array(length);
+	
+	for(var i=0;i<length;i++){
+		eventArray[i]={title:'gen',
+		start:'00',
+		end:'00',
+		allDay:false 
+		}
+
+	}
+	return eventArray;
+	}
+
+	setEvents(calendarevents){
+	this.events= this.initializeEventArray(calendarevents.length);
+
+	for(var i=0;i<calendarevents.length;i++){
+		
+		this.events[i].title =calendarevents[i].getTitle();
+		this.events[i].start = calendarevents[i].getStartTime();
+		this.events[i].end = calendarevents[i].getEndTime();
+
+	}
+	}
+	
 }
 
-eventinfo.events = eventarray;
 
-$('#calendar').fullCalendar(eventinfo)
+var fullCal = new Fullcalwrapper();
+
+fullCal.setEvents(events);
+
+fullCal.renderCalendar();
