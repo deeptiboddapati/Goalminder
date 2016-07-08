@@ -143,10 +143,7 @@ class CalendarEvent {
   //  Represents a single calendar event.
   constructor(){
 
-  var seed = moment();
-  seed.add(getRandomInt(1,365), 'days')
-  .add(getRandomInt(0,24),'hours')
-  .add(getRandomInt(0,60),'minutes')
+  var seed = getRandomDate(365)
 
   this.startTime = new Date(seed._d);
   this.duration = getRandomInt(0,1439-(seed.hours()*60+seed.minutes()));
@@ -277,6 +274,13 @@ function getRandomWord(){
 
 }
 
+function getRandomDate(days){
+  var seed = moment();
+  seed.add(getRandomInt(1,days), 'days')
+  .add(getRandomInt(0,24),'hours')
+  .add(getRandomInt(0,60),'minutes')
+  return seed
+}
 
 class Calendar{
   //Represents a calendar that the user owns or is subscribed to.
