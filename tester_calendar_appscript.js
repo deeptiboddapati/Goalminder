@@ -456,10 +456,6 @@ class Calendar{
 
 */
 
-var ap = new Calendar('Rose');
-start = ap.getEvents()[7].getStartTime()
-end = ap.getEvents()[35].getStartTime()
-console.log(ap.getEvents(start,end));
 
 
 
