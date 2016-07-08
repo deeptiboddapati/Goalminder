@@ -73,4 +73,3 @@ class Range
 	}
 */
 
-var spreadsheetapp = new SpreadsheetApp()

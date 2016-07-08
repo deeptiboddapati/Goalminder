@@ -143,7 +143,7 @@ class CalendarEvent {
   //  Represents a single calendar event.
   constructor(){
 
-  var seed = getRandomDate(365)
+  var seed = getRandomDate(60)
 
   this.startTime = new Date(seed._d);
   this.duration = getRandomInt(0,1439-(seed.hours()*60+seed.minutes()));
