@@ -8,7 +8,7 @@ var lastevent = new moment(events[events.length-1].getStartTime())
 
 firstevent.startOf('day')
 lastevent.startOf('day')
-
+//set day.midnight to firstevent+i
 var days = [];
 var numdays = lastevent.diff(firstevent,'days')
 for(var i = 0; i<= numdays; i++){ 
@@ -22,6 +22,7 @@ for(var i = 0; i<= numdays; i++){
 	
 }
 
+//generator function for days
 function* nextDay(days){
   var index = 0;
   while(true)
@@ -31,6 +32,7 @@ function* nextDay(days){
 var gen = nextDay(days);
 
 var date = gen.next().value
+//categorization function to put events in corresponding dates
 events.forEach(function(item,index){
 	
 	while(!(date.midnight.isSame(item.getStartTime(),'day'))){
@@ -46,7 +48,7 @@ events.forEach(function(item,index){
 
 })
 
-
+//add events to day and subtract duration from freetotal add it to busytotal
 days.forEach(function(item){
 	item.busytotal =0
 	item.busytimes = new Set();
