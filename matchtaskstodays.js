@@ -19,6 +19,10 @@ tasks.sort(function(a,b){
 	var difference = b.priority -a.priority;
 	return difference
 })
+
+console.log('original tasks')
+console.log(tasks)
+
 taskstwo.sort(function(a,b){
 	var difference = b.priority -a.priority;
 	return difference

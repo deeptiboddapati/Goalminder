@@ -71,22 +71,24 @@ class Days extends Array{
 
 	addTasks(tasks){
 
-		var days = this.nextDay()
-		var date = days.next().value
+		
+		
 		var daysarray = this
 		tasks.forEach(function(item,index){
+			var days = daysarray.nextDay()
+			var date = days.next().value
 
-			if(date.freetotal < item.durationunits){
+			while(date.freetotal < item.durationunits){
 				date = days.next().value
 				//console.log(date)
 			}
 
 			
-			/*
-			date.tasks.push(item)
-			date.freetotal -= item.durationunits
-			date.busytotal +=item.durationunits
-			*/
+			
+			//date.tasks.push(item)
+			//date.freetotal -= item.durationunits
+			//date.busytotal +=item.durationunits
+			
 			daysarray.addtask(item,date)
 
 		})
@@ -124,7 +126,7 @@ class Days extends Array{
 
 		this.forEach(function(day,date){
 			//console.log(daysarray)
-			console.log(date)
+			
 			var testday = daysarray[date]
 			if(testday.events.length != day.events.length){
 				console.log('event lists dont match');
@@ -150,48 +152,15 @@ class Days extends Array{
 			//check if the tasks equal
 			day.tasks.forEach(function(task,number){
 				var testtask = testday.tasks[number];
-				console.log('task number'+ number)
+				
 				if(!testday.tasks.includes(task)){
+					console.log('day number ' +date)
+					console.log('task number'+ number)
 					console.log('error task is not included');
 					console.log(task)
 					console.log(testday.tasks)
 				}
-				else if(!task.duedate.isSame(testtask.duedate)){
-					console.log('error task duedates dont equal');
-					console.log(task)
-					console.log(testtask)
-				}
-
-				else if(task.duration != testtask.duration){
-					console.log('task durations dont match')
-					console.log(task)
-					console.log(testtask)
-				}
-
-				else if(task.durationunits != testtask.durationunits){
-					console.log('task durationunits dont match')
-					console.log(task)
-					console.log(testtask)
-				}
-
-				else if(task.title != testtask.title){
-					console.log('task title dont match')
-					console.log(task)
-					console.log(testtask)
-				}
-
-
-				else if(task.importance != testtask.importance){
-					console.log('task durations dont match')
-					console.log(task)
-					console.log(testtask)
-				}
-
-				else if(task.priority != testtask.priority){
-					console.log('task durations dont match')
-					console.log(task)
-					console.log(testtask)
-				}												
+													
 			})//end check tasks
 
 
@@ -212,3 +181,4 @@ d.addTasks(taskstwo)
 
 
 
+d.testDays(days)
