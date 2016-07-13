@@ -66,6 +66,10 @@ class Days extends Array{
 
 		})
 
+		date.busytotal = date.busytimes.size;
+		date.freetotal -= date.busytotal
+		date.originalfreetotal = date.freetotal;
+		date.originalbusytotal = date.busytotal;
 
 	}
 
@@ -110,59 +114,78 @@ class Days extends Array{
 		day.taskstotal += task.durationunits
 
 	}
-	testDays(daysarray){
+	testDays(comparisonDays){
 		/*
-		events:[],
-		tasks:[],
-		midnight:0,
-		freetotal:144,
-		busytotal:0,
+		
+		
 		busytimes:new Set(),
 		freetimes: this.initFreetime(),
-		originalbusytotal:0,
-		originalfreetotal:0,
-		taskstotal:0
+		
 		*/
 
 		this.forEach(function(day,date){
-			//console.log(daysarray)
+			//console.log(comparisonDays)
 			
-			var testday = daysarray[date]
-			if(testday.events.length != day.events.length){
+			var comparisonDay = comparisonDays[date]
+
+			if(!comparisonDay.midnight.isSame(day.midnight)){
+				console.log('midnights dont match!')
+				console.log(comparisonDay)
+				console.log(day)
+			}
+			var samefreetotal = day.freetotal == comparisonDay.freetotal
+			var samebusytotal = day.busytotal == comparisonDay.busytotal
+			var sameoriginalbusytotal = day.originalbusytotal == comparisonDay.originalbusytotal
+			var sameoriginalfreetotal = day.originalfreetotal == comparisonDay.originalfreetotal
+			var sametaskstotal = day.taskstotal == comparisonDay.taskstotal
+			
+			if( !samefreetotal || !samebusytotal || !sameoriginalbusytotal || !sameoriginalfreetotal || !sametaskstotal){
+				console.log('totals are wrong!')
+				console.log(date)
+				console.log(day)
+				console.log(comparisonDay)
+				
+			}
+
+			if(comparisonDay.events.length != day.events.length){
 				console.log('event lists dont match');
 				console.log(day)
-				console.log(testday)
+				console.log(comparisonDay)
 			}
 
 			//check if the events equal
 			day.events.forEach(function(event,number){
-				var testevent = testday.events[number];
+				var comparisonEvent = comparisonDay.events[number];
 
-				if(!event.start.isSame(testevent.start)){
+				if(!event.start.isSame(comparisonEvent.start)){
 					console.log('error events dont equal');
 					console.log(event)
-					console.log(testevent)
+					console.log(comparisonEvent)
 				}
 
-				else if(event.duration != testevent.duration){
+				else if(event.duration != comparisonEvent.duration){
 					console.log('durations dont match')
 				}
 			})//end check events
 
 			//check if the tasks equal
 			day.tasks.forEach(function(task,number){
-				var testtask = testday.tasks[number];
+				var comparisonTask = comparisonDay.tasks[number];
 				
-				if(!testday.tasks.includes(task)){
+				if(!comparisonDay.tasks.includes(task)){
 					console.log('day number ' +date)
 					console.log('task number'+ number)
 					console.log('error task is not included');
 					console.log(task)
-					console.log(testday.tasks)
+					console.log(comparisonDay.tasks)
 				}
 													
 			})//end check tasks
 
+			//check if busytimes are equal
+
+
+			//check if freetimes are equal
 
 		})
 

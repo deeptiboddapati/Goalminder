@@ -20,8 +20,8 @@ tasks.sort(function(a,b){
 	return difference
 })
 
-console.log('original tasks')
-console.log(tasks)
+//console.log('original tasks')
+//console.log(tasks)
 
 taskstwo.sort(function(a,b){
 	var difference = b.priority -a.priority;
@@ -59,9 +59,9 @@ freetotal+busytotal should = 144
 never less than 0
 */
 days.forEach(function(item){
-	item.tasktotal= 0;
+	item.taskstotal= 0;
 	item.tasks.forEach(function(task){
-		item.tasktotal += task.durationunits
+		item.taskstotal += task.durationunits
 	})
 	
 	})
