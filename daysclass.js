@@ -183,9 +183,28 @@ class Days extends Array{
 			})//end check tasks
 
 			//check if busytimes are equal
+			var comparisonBusyTimes = comparisonDay.busytimes
+			var busytime = day.busytimes.values()
+			for(var i = 0; i <day.busytimes.size; i++){
+				
+				if(!comparisonBusyTimes.has(busytime.next().value)){
+					console.log('busytimes dont match')
+					console.log(day)
+					console.log(comparisonDay)
+				}
+			}
+			//check if freetimes are not in busytimes
+			var freetime = day.freetimes.values()
 
+			for(var i = 0; i <day.freetimes.size; i++){
 
-			//check if freetimes are equal
+				if(day.busytimes.has(freetime.next().value)){
+
+					console.log('freetimes overlap with busytimes')
+					console.log(day.busytimes)
+					console.log(day.freetimes)
+				}
+			}
 
 		})
 
