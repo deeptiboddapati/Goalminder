@@ -114,6 +114,57 @@ class Days extends Array{
 		day.taskstotal += task.durationunits
 
 	}
+
+	setTasks(){
+		this.forEach(function(day){
+			day.tasks.forEach(function(task){
+				var freetime = day.freetimes.values();
+				var time = freetime.next().value;
+				var notSet = true;
+				while(notSet){
+					
+					// 1: the set of freetimes has time-1 
+					//then set time to time-1
+					if(day.freetimes.has(time-1)){
+						var newtime = time- 1
+						var freetime = day.freetimes.values();
+						var time = freetime.next().value;
+						while(!(time ==newtime)){
+							time=freetime.next().value;
+						}
+					}
+
+					//2: the set of freetimes doesnt have time-1
+					//then check if it has time+i, i =1; i <task.durationUnits;i++
+					else{
+						var i = 1;
+						var canFit = true;
+						while(i < task.durationUnits && canFit){
+							if(day.freetimes.has(time+i)){
+								i++
+							}
+							else{
+							canFit=false;
+							}
+						}
+						if(canFit){
+							task.startTime = time;
+							day.freetimes.delete(time)
+							for(var i = 1; i <= task.durationUnits; i++){
+								day.freetimes.delete(time+i)
+							}
+							notSet = false
+						}
+						else{
+							time =  freetime.next().value;
+						}
+					}
+				}
+			})
+		})
+	}
+
+
 	testDays(comparisonDays){
 		/*
 		
