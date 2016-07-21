@@ -1,0 +1,41 @@
+
+list = [[0,infinity,/n]]
+
+
+Find an element T where s2 => s1 and s2<e1
+	if T is free time
+		if e2>e1
+			e1=s2
+			p2=p1
+			p1=i2
+
+			find all other elements where e2>sx sx =>e1
+				For each element
+					if element is freetime 
+						sx = e2
+						if ex-sx is 0 or less delete the element
+							set the pointer of the element before it to px
+
+		if e2 < e1
+			list.push(e2,e1,p1)
+			e1= s1
+			p2 = list.length-1
+			p1= i2
+
+	If T is not free time 
+		if e2>e1
+		find all other elements where e2>sx sx =>e1
+			For each element
+				if element is freetime 
+					sx = e2
+					if ex-sx is 0 or less delete the element
+						set the pointer of the element before it to px
+				if element is not freetime
+					p2 =px
+					px =i2
+		else if e2 < e1
+			p2 = p1
+			p1 = i2
+
+
+			
