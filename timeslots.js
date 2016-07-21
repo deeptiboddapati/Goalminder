@@ -15,7 +15,7 @@ class Timeslot{
 	}
 
 	includesStartOf(slot){
-		console.log(this)
+		//console.log(this)
 		return this.start <= slot.start && this.end > slot.start;
 	}
 
@@ -71,7 +71,7 @@ class Timeslots extends Array{
 		
 
 		var timeslot = this.getTheFitFor(event);
-		console.log(timeslot)
+		//console.log(timeslot)
 		this.push(event)
 		if(timeslot.isFree){
 
@@ -89,29 +89,12 @@ class Timeslots extends Array{
 			}
 
 			else{ //if event.endsBefore(timeslot)
-				/*
-				var newSlot = this.addNewSlot(
-				this.indexOf(event), //newSlot.previous
-				event.end, //newSlot.start
-				timeslot.end, //newSlot.end 
-				timeslot.next //newSlot.next
-				);
-				*/
+
 				var newSlot = new Timeslot(event.end,
 					timeslot.end, 
 					false);
 				this.push(newSlot);
 				timeslot.end = event.start;
-
-				/*
-				event.next = timeslot.next;
-				event.previous = this.indexOf(timeslot);
-				timeslot.next = this.indexOf(event);
-
-				newSlot.next = event.next;
-				newSlot.previous = this.indexOf(event);
-				event.next = this.indexOf(newSlot);
-				*/
 
 				this.insertAfter(timeslot,//existing Slot
 					event //Slot to be inserted.
@@ -137,7 +120,12 @@ class Timeslots extends Array{
 		}
 	
 	}//end addEvent
-
+	addEvents(events){
+		var timeslots =this;
+		events.forEach(function(event){
+			timeslots.addEvent(event.getStartTime(),event.getEndTime())
+		})
+	}
 	addNewSlot(previous,start,end,next){
 		var slot = new Timeslot(start,end,false);
 		slot.previous=previous;
@@ -151,4 +139,19 @@ class Timeslots extends Array{
 		existingSlot.next = this.indexOf(addedSlot)
 	}//end insertAfter
 
+	checkFreetimes(){
+		this.forEach(function(slot,index,array){
+			if(slot.isFree){
+				array.forEach(function(testslot){
+					if(testslot.includesStartOf(slot) && !(testslot == slot)){
+						console.log('Overlap error.')
+						console.log(slot)
+						console.log(testslot)
+						return false
+					}
+				})
+			}
+		})
+		return true
+	}
 }//end class Timeslots 
