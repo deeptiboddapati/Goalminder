@@ -6,16 +6,16 @@ class Timeslot{
 		this.next = null;
 	}
 	else{
-		this.next = 0;
+		this.next = 'nan';
 	}
 	
-	this.previous = 0;
+	this.previous = 'nan';
 	this.isBooked = isBooked;
 	this.isFree = !isBooked;
 	}
 
 	includesStartOf(slot){
-		//console.log(this)
+		// console.log(this)
 		return this.start <= slot.start && this.end > slot.start;
 	}
 
@@ -39,7 +39,7 @@ class Timeslot{
 class Timeslots extends Array{
 	constructor(){
 		super();
-		this.push(new Timeslot(0,Infinity,false))
+		this.push(new Timeslot(new Date(),Infinity,false))
 	}//end constructor
 
 	/* method */ getTheFitFor(event){
@@ -71,11 +71,12 @@ class Timeslots extends Array{
 		
 
 		var timeslot = this.getTheFitFor(event);
-		//console.log(timeslot)
+		// console.log(timeslot)
 		this.push(event)
 		if(timeslot.isFree){
-
+			// console.log('timeslot.isFree')
 			if(event.endsAfter(timeslot)){
+				// console.log('event.endsAfter(timeslot)')
 
 				timeslot.end = event.start;
 				this.insertAfter(
@@ -84,12 +85,15 @@ class Timeslots extends Array{
 				)
 				
 				this.updateFreeSpotsWith(event);
-
+				// console.log(this.indexOf(event))
+				// console.log(event)
+				// console.log(this.indexOf(timeslot))
+				// console.log(timeslot)
 
 			}
 
 			else{ //if event.endsBefore(timeslot)
-
+				// console.log('event.endsBefore(timeslot)')
 				var newSlot = new Timeslot(event.end,
 					timeslot.end, 
 					false);
@@ -99,6 +103,10 @@ class Timeslots extends Array{
 				this.insertAfter(timeslot,//existing Slot
 					event //Slot to be inserted.
 					);
+				// console.log(this.indexOf(event))
+				// console.log(event)
+				// console.log(this.indexOf(timeslot))
+				// console.log(timeslot)
 				this.insertAfter(event,//existing Slot
 					newSlot //Slot to be inserted.
 					);
@@ -107,17 +115,31 @@ class Timeslots extends Array{
 
 		}
 		else{ //if timeslot.isBooked
+			// console.log('timeslot is booked')
 			if(event.endsAfter(timeslot)){
+				// console.log('event.endsAfter(timeslot)')
 				this.updateFreeSpotsWith(event);
+				this.insertAfter(timeslot,event)
+				// console.log(this.indexOf(event))
+				// console.log(event)
+				// console.log(this.indexOf(timeslot))
+				// console.log(timeslot)
 			}
 			else{ //if event.endsBefore(timeslot)
+				// console.log('event.endsBefore(timeslot)')
 				this.insertAfter(
 					timeslot, //existing Slot
 					event //Slot to be inserted.
 				)
+				// console.log(this.indexOf(event))
+				// console.log(event)
+				// console.log(this.indexOf(timeslot))
+				// console.log(timeslot)
 			}
 
 		}
+
+		return this.indexOf(event)
 	
 	}//end addEvent
 	addEvents(events){
@@ -144,14 +166,50 @@ class Timeslots extends Array{
 			if(slot.isFree){
 				array.forEach(function(testslot){
 					if(testslot.includesStartOf(slot) && !(testslot == slot)){
-						console.log('Overlap error.')
-						console.log(slot)
-						console.log(testslot)
+						// console.log('Overlap error.')
+						// console.log(slot)
+						// console.log(testslot)
 						return false
 					}
 				})
 			}
 		})
 		return true
+	}
+	nextOf(slot){
+		return this[slot.next]
+	}
+	previousOf(slot){
+		return this[slot.previous]
+	}
+	traverseList(){
+		var slot = this[0];
+		while(!(slot.next == null)){
+			// console.log(this.indexOf(slot))
+			slot = this.nextOf(slot)
+		}
+		// console.log('out of while')
+		// console.log(this.indexOf(slot))
+	}
+
+	addTask(duration){
+		var slot = this[0];
+		var stillLooking = true;
+		while(stillLooking){
+			console.log(slot)
+			var tempduration = slot.end-slot.start;
+			console.log(tempduration)
+			console.log(tempduration > duration)
+			if( tempduration > duration && slot.isFree){
+				stillLooking = false;
+			}
+			else{
+				slot = this.nextOf(slot)
+			}
+		}
+
+		var newEnd = moment(slot.start).add(duration, 'minutes')._d
+		
+		return this.addEvent(slot.start,newEnd)
 	}
 }//end class Timeslots 
