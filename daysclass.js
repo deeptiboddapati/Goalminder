@@ -26,7 +26,6 @@ class Days extends Array{
 		return freetime
 	}
 	nextDay(){
-		//generator function for days
 		return this[Symbol.iterator]();
 	}
 
@@ -74,9 +73,6 @@ class Days extends Array{
 	}
 
 	addTasks(tasks){
-
-		
-		
 		var daysarray = this
 		tasks.forEach(function(item,index){
 			var days = daysarray.nextDay()
@@ -84,17 +80,8 @@ class Days extends Array{
 
 			while(date.freetotal < item.durationunits){
 				date = days.next().value
-				//console.log(date)
 			}
-
-			
-			
-			//date.tasks.push(item)
-			//date.freetotal -= item.durationunits
-			//date.busytotal +=item.durationunits
-			
 			daysarray.addtask(item,date)
-
 		})
 	}
 
@@ -123,8 +110,6 @@ class Days extends Array{
 				var notSet = true;
 				while(notSet){
 					
-					// 1: the set of freetimes has time-1 
-					//then set time to time-1
 					if(day.freetimes.has(time-1)){
 						var newtime = time- 1
 						var freetime = day.freetimes.values();
@@ -134,8 +119,6 @@ class Days extends Array{
 						}
 					}
 
-					//2: the set of freetimes doesnt have time-1
-					//then check if it has time+i, i =1; i <task.durationUnits;i++
 					else{
 						var i = 1;
 						var canFit = true;
@@ -163,115 +146,4 @@ class Days extends Array{
 			})
 		})
 	}
-
-
-	testDays(comparisonDays){
-		/*
-		
-		
-		busytimes:new Set(),
-		freetimes: this.initFreetime(),
-		
-		*/
-
-		this.forEach(function(day,date){
-			//console.log(comparisonDays)
-			
-			var comparisonDay = comparisonDays[date]
-
-			if(!comparisonDay.midnight.isSame(day.midnight)){
-				console.log('midnights dont match!')
-				console.log(comparisonDay)
-				console.log(day)
-			}
-			var samefreetotal = day.freetotal == comparisonDay.freetotal
-			var samebusytotal = day.busytotal == comparisonDay.busytotal
-			var sameoriginalbusytotal = day.originalbusytotal == comparisonDay.originalbusytotal
-			var sameoriginalfreetotal = day.originalfreetotal == comparisonDay.originalfreetotal
-			var sametaskstotal = day.taskstotal == comparisonDay.taskstotal
-			
-			if( !samefreetotal || !samebusytotal || !sameoriginalbusytotal || !sameoriginalfreetotal || !sametaskstotal){
-				console.log('totals are wrong!')
-				console.log(date)
-				console.log(day)
-				console.log(comparisonDay)
-				
-			}
-
-			if(comparisonDay.events.length != day.events.length){
-				console.log('event lists dont match');
-				console.log(day)
-				console.log(comparisonDay)
-			}
-
-			//check if the events equal
-			day.events.forEach(function(event,number){
-				var comparisonEvent = comparisonDay.events[number];
-
-				if(!event.start.isSame(comparisonEvent.start)){
-					console.log('error events dont equal');
-					console.log(event)
-					console.log(comparisonEvent)
-				}
-
-				else if(event.duration != comparisonEvent.duration){
-					console.log('durations dont match')
-				}
-			})//end check events
-
-			//check if the tasks equal
-			day.tasks.forEach(function(task,number){
-				var comparisonTask = comparisonDay.tasks[number];
-				
-				if(!comparisonDay.tasks.includes(task)){
-					console.log('day number ' +date)
-					console.log('task number'+ number)
-					console.log('error task is not included');
-					console.log(task)
-					console.log(comparisonDay.tasks)
-				}
-													
-			})//end check tasks
-
-			//check if busytimes are equal
-			var comparisonBusyTimes = comparisonDay.busytimes
-			var busytime = day.busytimes.values()
-			for(var i = 0; i <day.busytimes.size; i++){
-				
-				if(!comparisonBusyTimes.has(busytime.next().value)){
-					console.log('busytimes dont match')
-					console.log(day)
-					console.log(comparisonDay)
-				}
-			}
-			//check if freetimes are not in busytimes
-			var freetime = day.freetimes.values()
-
-			for(var i = 0; i <day.freetimes.size; i++){
-
-				if(day.busytimes.has(freetime.next().value)){
-
-					console.log('freetimes overlap with busytimes')
-					console.log(day.busytimes)
-					console.log(day.freetimes)
-				}
-			}
-
-		})
-
-	}
-
-
-
 }
-
-var d = new Days(days.length)
-d.setMidnight(events[0].getStartTime())
-
-d.addEvents(events)
-
-d.addTasks(taskstwo)
-
-
-
-d.testDays(days)

@@ -15,7 +15,7 @@ class Timeslot{
 	}
 
 	includesStartOf(slot){
-		// console.log(this)
+		
 		return this.start <= slot.start && this.end > slot.start;
 	}
 
@@ -40,19 +40,19 @@ class Timeslots extends Array{
 	constructor(){
 		super();
 		this.push(new Timeslot(new Date(),Infinity,false))
-	}//end constructor
+	}
 
-	/* method */ getTheFitFor(event){
+
+	getTheFitFor(event){
 		for(var i = 0; !this[i].includesStartOf(event); i++){
 		}
 		return this[i]
-	}//end getTheFitFor
+	}
+	
 
-	/* method */ updateFreeSpotsWith(event){
+	updateFreeSpotsWith(event){
 		this.forEach(function(slot,index,timeslots){
-
 			if(event.includesStartOf(slot) && slot.isFree){
-
 				slot.start = event.end;
 				if(slot.isFullyUsed()){
 					timeslots[slot.previous].next = slot.next;
@@ -60,88 +60,52 @@ class Timeslots extends Array{
 
 			}
 		})
-	}//end updateFreeSpotsWith
+	}
 
-	/* method */ addEvent(startTime,endTime){
+	addEvent(startTime,endTime){
 		var event = new Timeslot(
-		startTime, //start
-		endTime, //end
-		true //isBooked
+		startTime, 
+		endTime, 
+		true 
 		)
-		
-
 		var timeslot = this.getTheFitFor(event);
-		// console.log(timeslot)
+		
 		this.push(event)
 		if(timeslot.isFree){
-			// console.log('timeslot.isFree')
+			
 			if(event.endsAfter(timeslot)){
-				// console.log('event.endsAfter(timeslot)')
-
 				timeslot.end = event.start;
-				this.insertAfter(
-					timeslot, //existing Slot
-					event //Slot to be inserted.
-				)
-				
+				this.insertAfter(timeslot, event)	
 				this.updateFreeSpotsWith(event);
-				// console.log(this.indexOf(event))
-				// console.log(event)
-				// console.log(this.indexOf(timeslot))
-				// console.log(timeslot)
-
 			}
-
-			else{ //if event.endsBefore(timeslot)
-				// console.log('event.endsBefore(timeslot)')
+			else{ 
 				var newSlot = new Timeslot(event.end,
 					timeslot.end, 
 					false);
 				this.push(newSlot);
 				timeslot.end = event.start;
-
-				this.insertAfter(timeslot,//existing Slot
-					event //Slot to be inserted.
-					);
-				// console.log(this.indexOf(event))
-				// console.log(event)
-				// console.log(this.indexOf(timeslot))
-				// console.log(timeslot)
-				this.insertAfter(event,//existing Slot
-					newSlot //Slot to be inserted.
-					);
-
+				this.insertAfter(timeslot,event);
+				this.insertAfter(event,newSlot);
 			}
 
 		}
-		else{ //if timeslot.isBooked
-			// console.log('timeslot is booked')
+		else{ 
+
 			if(event.endsAfter(timeslot)){
-				// console.log('event.endsAfter(timeslot)')
+				
 				this.updateFreeSpotsWith(event);
 				this.insertAfter(timeslot,event)
-				// console.log(this.indexOf(event))
-				// console.log(event)
-				// console.log(this.indexOf(timeslot))
-				// console.log(timeslot)
 			}
-			else{ //if event.endsBefore(timeslot)
-				// console.log('event.endsBefore(timeslot)')
+			else{ 
+
 				this.insertAfter(
-					timeslot, //existing Slot
-					event //Slot to be inserted.
+					timeslot, 
+					event 
 				)
-				// console.log(this.indexOf(event))
-				// console.log(event)
-				// console.log(this.indexOf(timeslot))
-				// console.log(timeslot)
 			}
-
 		}
-
 		return this.indexOf(event)
-	
-	}//end addEvent
+	}
 	addEvents(events){
 		var timeslots =this;
 		events.forEach(function(event){
@@ -159,16 +123,13 @@ class Timeslots extends Array{
 		addedSlot.next = existingSlot.next;
 		addedSlot.previous = this.indexOf(existingSlot);
 		existingSlot.next = this.indexOf(addedSlot)
-	}//end insertAfter
+	}
 
 	checkFreetimes(){
 		this.forEach(function(slot,index,array){
 			if(slot.isFree){
 				array.forEach(function(testslot){
 					if(testslot.includesStartOf(slot) && !(testslot == slot)){
-						// console.log('Overlap error.')
-						// console.log(slot)
-						// console.log(testslot)
 						return false
 					}
 				})
@@ -185,11 +146,9 @@ class Timeslots extends Array{
 	traverseList(){
 		var slot = this[0];
 		while(!(slot.next == null)){
-			// console.log(this.indexOf(slot))
+			
 			slot = this.nextOf(slot)
 		}
-		// console.log('out of while')
-		// console.log(this.indexOf(slot))
 	}
 
 	addTask(duration){
@@ -212,4 +171,4 @@ class Timeslots extends Array{
 		
 		return this.addEvent(slot.start,newEnd)
 	}
-}//end class Timeslots 
+}
